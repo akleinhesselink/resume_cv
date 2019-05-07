@@ -1,0 +1,151 @@
+---
+name: Andy Kleinhesselink
+position: "Postdoctoral Researcher"
+address: "Ecology and Evolutionary Biology, UCLA"
+phone: +1 310 825-4967
+#web: "https://github.com/akleinhesselink/"
+email: "arklein@ucla.edu"
+github: akleinhesselink
+researchgate: Andrew Kleinhesselink
+linkedin: andrew-kleinhesselink-6116b294
+date: "`r format(Sys.time(), '%B %Y')`"
+output: 
+  vitae::moderncv:
+    theme: classic
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+library(tidyverse)
+library(glue)
+library(lubridate)
+library(rorcid)
+library(scholar)
+```
+
+
+
+```{r loadData}
+# Job titles
+job.titles <- read_csv("../data/job-titles.csv",
+                      col_types = cols(
+                        begin = col_date("%m/%d/%y"),
+                        end = col_date("%m/%d/%y")
+                        )
+)
+# Job descriptions
+job.descriptions <- read_csv("../data/job-descriptions.csv")
+
+awards <- read_csv("../data/awards.csv")
+
+presentations <- read_csv('../data/presentations.csv')
+
+peer_reviews <- read_csv('../data/peer_reviews.csv') 
+
+
+
+```
+
+
+
+# Education
+
+```{r education}
+
+edu <- rorcid::orcid_educations("0000-0003-2149-2027")
+
+edu$`0000-0003-2149-2027`$`education-summary` %>% 
+  mutate(`end-date.year.value` = replace_na(`end-date.year.value`, "2019")) %>% 
+  detailed_entries(
+    what = `role-title`,
+    when = glue::glue("{`start-date.year.value`}--{`end-date.year.value`}"), 
+    with = organization.name,
+    where = glue("{organization.address.city}, {organization.address.region}")
+  )
+```
+
+
+# Experience
+
+```{r experience}
+
+job.titles %>% 
+  left_join(job.descriptions) %>% # Join job descriptions
+  arrange(desc(begin)) %>%   # Arrange by descending begin date
+  detailed_entries(   # Format as detailed entries
+    what = position,
+    when = as.character(
+      glue("{year(begin)} - {if_else(!is.na(end), as.character(year(end)), 'present')}")),
+    with = employer,
+    where = glue("{city}, {region}"),
+    why = accomplishments)
+
+```
+
+
+# Publications
+
+```{r publications}
+
+get_publications("Hv1P9zYAAAAJ") %>%
+ arrange(desc(year)) %>%
+  filter( number != '' ) %>% 
+  detailed_entries(
+    what = title,
+    when = year,
+    with = author,
+    where = journal
+  )
+```
+
+
+# Grants and Fellowships
+```{r awards}
+awards %>% 
+  brief_entries(
+    what = title,
+    when = year)
+```
+
+
+# Presentations
+
+```{r presentations}
+
+presentations %>% 
+  arrange(desc(When)) %>% 
+  detailed_entries(what = Title,
+                   when = When,
+                   with = Conference,
+                   where = Location)
+
+```
+
+
+# Peer Reviews 
+
+```{r reviewer}
+# should be able to use rpublons package in the future
+
+peer_reviews %>% 
+  arrange(desc(reviews)) %>% 
+  mutate( output = paste0(publication, ' (', reviews, ')' )) %>% 
+  select(output) %>% 
+  summarise( output = paste0( output, collapse = ', ')) %>% 
+  brief_entries(what  = output )
+
+```
+
+
+
+# Computational Skills 
+
+- R: Data analysis and visualization
+- STAN: Bayesian Modeling 
+- SQLite: Database management
+- Python, NumPy and SciPy 
+- Git: Version control and collaboration
+
+
+

@@ -1,0 +1,12 @@
+jobId,begin,end,position,employer,department,city,region,country,supervisor
+11,2/1/16,,Post-doctoral Research Associate,UCLA,Ecology and Evolutionary Biology,Los Angeles,CA,US,Nathan Kraft
+10,8/25/11,1/9/17,Graduate Research Assistant,Utah State University,Wildland Resources,Logan,UT,US,Peter Adler
+9,6/1/10,9/1/10,Lab Technician,University of California Davis,Ecology,Davis,CA,US,Susan Harrison
+8,9/1/09,5/1/11,Graduate Teaching Assistant,Sonoma State University,Biology,Rohnert Park,CA,US,
+7,9/1/06,8/1/09,Biological Science Technician,Presidio Trust,Natural Resources,San Francisco,CA,US,Mark Frey
+6,8/1/07,9/1/07,Bird Banding Technician,Point Blue Conservation Science,Farallon,Petaluma,CA,US,Jim Tietz
+5,8/1/05,9/1/06,Restoration Intern,Golden Gate National Parks Conservancy,Natural Resources,San Francisco,CA,US,Christina Crooker
+4,9/11/01,6/10/05,Restoration Technician,Carleton College,Arboretum,Northfield,MN,US,Myles Bakke
+3,6/20/03,9/1/03,Lab Technician,Washington State University,Biology,Vancouver,WA,US,Sally Hacker
+2,6/1/02,9/1/02,Biological Science Aid,US Forest Service,Botany,Medford,OR,US,Wayne Rolle
+1,6/1/00,9/1/00,Conservation Intern,The Nature Conservancy,Natural Resources,Medford,OR,US,
