@@ -39,10 +39,13 @@ job.descriptions <- read_csv("../data/job-descriptions.csv")
 
 awards <- read_csv("../data/awards.csv")
 
+manuscripts <- read.csv('../data/manuscripts.csv')
+
 presentations <- read_csv('../data/presentations.csv')
 
 peer_reviews <- read_csv('../data/peer_reviews.csv') 
 
+in_press <- read.csv('../data/in_press.csv')
 
 
 ```
@@ -87,10 +90,10 @@ job.titles %>%
 # Publications
 
 ```{r publications}
-
 get_publications("Hv1P9zYAAAAJ") %>%
- arrange(desc(year)) %>%
-  filter( number != '' ) %>% 
+  filter( number != '' ) %>%
+  bind_rows(in_press) %>% 
+  arrange(desc(year))  %>%
   detailed_entries(
     what = title,
     when = year,
@@ -98,6 +101,20 @@ get_publications("Hv1P9zYAAAAJ") %>%
     where = journal
   )
 ```
+
+# Manuscripts in Preparation
+
+```{r manuscripts }
+
+manuscripts %>%
+  detailed_entries(
+    what = title,
+    with = author,
+    where = status
+  )
+```
+
+
 
 
 # Grants and Fellowships
@@ -123,7 +140,7 @@ presentations %>%
 ```
 
 
-# Peer Reviews 
+# Peer Reviewer for: 
 
 ```{r reviewer}
 # should be able to use rpublons package in the future
@@ -139,13 +156,13 @@ peer_reviews %>%
 
 
 
-# Computational Skills 
+# Data and Programming Skills 
 
-- R: Data analysis and visualization
+- R: Analysis, visualization, simulation modeling
 - STAN: Bayesian Modeling 
-- SQLite: Database management
-- Python, NumPy and SciPy 
 - Git: Version control and collaboration
+- SQLite: Database
+- Python, NumPy and SciPy 
 
 
 
