@@ -1,6 +1,6 @@
 ---
 name: Andy Kleinhesselink
-position: "Postdoctoral Researcher"
+position: "Quantitative Ecologist"
 address: "Ecology and Evolutionary Biology, UCLA"
 phone: +1 310 825-4967
 #web: "https://github.com/akleinhesselink/"
@@ -34,6 +34,14 @@ job.titles <- read_csv("../data/job-titles.csv",
                         end = col_date("%m/%d/%y")
                         )
 )
+
+
+job.titles$end[is.na( job.titles$end)] <- today()
+
+job.titles <- 
+  job.titles %>% 
+  filter(is.na(end) | year(end) > 2007 | jobId == 6 )
+
 # Job descriptions
 job.descriptions <- read_csv("../data/job-descriptions.csv")
 
@@ -74,12 +82,12 @@ edu$`0000-0003-2149-2027`$`education-summary` %>%
 ```{r experience}
 
 job.titles %>% 
-  left_join(job.descriptions) %>% # Join job descriptions
-  arrange(desc(begin)) %>%   # Arrange by descending begin date
+  left_join(job.descriptions) %>% # Join job descriptions 
+  arrange(desc(end)) %>%   # Arrange by descending end date
   detailed_entries(   # Format as detailed entries
     what = position,
     when = as.character(
-      glue("{year(begin)} - {if_else(!is.na(end), as.character(year(end)), 'present')}")),
+      glue("{year(begin)} - {if_else(end != today(), as.character(year(end)), 'present')}")),
     with = employer,
     where = glue("{city}, {region}"),
     why = accomplishments)
@@ -115,17 +123,6 @@ manuscripts %>%
 ```
 
 
-
-
-# Grants and Fellowships
-```{r awards}
-awards %>% 
-  brief_entries(
-    what = title,
-    when = year)
-```
-
-
 # Presentations
 
 ```{r presentations}
@@ -140,28 +137,42 @@ presentations %>%
 ```
 
 
-# Peer Reviewer for: 
-
-```{r reviewer}
-# should be able to use rpublons package in the future
-
-peer_reviews %>% 
-  arrange(desc(reviews)) %>% 
-  mutate( output = paste0(publication, ' (', reviews, ')' )) %>% 
-  select(output) %>% 
-  summarise( output = paste0( output, collapse = ', ')) %>% 
-  brief_entries(what  = output )
-
+# Grants and Fellowships
+```{r awards}
+awards %>% 
+  filter( !str_detect(title, "(John)|(Ralph)") ) %>% 
+  brief_entries(
+    what = title,
+    when = year)
 ```
 
+# Teaching and Mentoring
+- Instructor for Software Carpentry: (https://software-carpentry.org/)
+  - Teach lessons on Shell, Git and R for data analysis and data visualization
+  - Organized workshop for [UCLA EEB, April 7th, 2017.](https://ucla-data-archive.github.io/2018-04-07-ucla-eeb/)
+- Undergraduate mentoring 
+  - Undergraduate student research projects in Kraft Lab at UCLA.
+  - NSF REU projects in Adler Lab at USU.
+- Ecological Society of America SEEDS Mentor. August 2012.
+  - Undergraduate mentor for ESA Annual meeting. 
 
 
-# Data and Programming Skills 
+# Service and Outreach 
 
-- R: Analysis, visualization, simulation modeling
-- STAN: Bayesian Modeling 
-- Git: Version control and collaboration
-- SQLite: Database
+- Peer reviewer: AoB Plants (3), Ecology Letters (4), Journal of Vegetation Science (2), The American Naturalist (3), New Phytologist (2), Dendrochronologia (1), Ecology (1), Functional Ecology (1), Global Ecology and Biogeography (2), Oecologia (1), Plos One (1), Biological Invasions (1), Ecography (1), Ecosphere (1), Methods in Ecology and Evolution (1), Plant Ecology and Diversity (1), Plant and Soil (1), NSF DEB Grants (1)
+- Board Member, UCLA Bruin Naturalist Club, 2018-2019.
+  - Organized and led natural history field trips for undergraduates. 
+- Co-Chair of USU Ecology Center Seminar Committee. 2013-2014.
+- Vice President San Francisco Nature Education 2009-2010.
+  - Led environmental education lessons for students at underserved elementary schools.
+- Contributor to iNaturalist: https://www.inaturalist.org/people/andy71
+- Contributor to eBird: https://ebird.org/profile/MTM5OTI2/US-CA-037
+
+# Computational Skills 
+
+- R: Statistical analysis, data visualization, simulation modeling
+- STAN: Bayesian modeling 
+- Git: Version control
 - Python, NumPy and SciPy 
 
 
